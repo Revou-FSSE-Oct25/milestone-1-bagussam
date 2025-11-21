@@ -52,8 +52,27 @@
         }
     </script>
 
-    <!-- Logic Script -->
+    <!-- GOOGLE FORM LOGIC SCRIPT -->
     <script>
+        // ==========================================
+        // CONFIGURATION: PASTE YOUR GOOGLE FORM DATA HERE
+        // ==========================================
+        
+        // 1. Paste your Google Form URL here (Make sure it ends in /formResponse)
+        const GOOGLE_FORM_URL = "https://docs.google.com/forms/d/e/YOUR_FORM_ID_HERE/formResponse";
+
+        // 2. Paste your Entry IDs here (e.g., "entry.123456")
+        const GOOGLE_FORM_IDS = {
+            name: "entry.YOUR_NAME_ID",       // e.g. "entry.123456"
+            email: "entry.YOUR_EMAIL_ID",     // e.g. "entry.987654"
+            message: "entry.YOUR_MESSAGE_ID", // e.g. "entry.555555"
+            type: "entry.YOUR_TYPE_ID",       // e.g. "entry.111111" (For "Message" or "Meeting")
+            date: "entry.YOUR_DATE_ID",       // e.g. "entry.222222"
+            time: "entry.YOUR_TIME_ID"        // e.g. "entry.333333"
+        };
+        // ==========================================
+
+
         document.addEventListener('DOMContentLoaded', () => {
             const contactForm = document.getElementById('contactForm');
             const submitBtn = document.getElementById('submitBtn');
@@ -67,18 +86,16 @@
             const timeHourInput = document.getElementById('meetingHour');
             const timeAmPmInput = document.getElementById('meetingAmPm');
 
-            // Toggle Meeting Fields Logic
+            // Toggle Meeting Fields
             function updateFormState() {
                 if (typeMeeting.checked) {
                     meetingFields.classList.remove('hidden');
-                    // Make fields required
                     dateInput.required = true;
                     timeHourInput.required = true;
                     timeAmPmInput.required = true;
                     submitBtn.textContent = "Send Request";
                 } else {
                     meetingFields.classList.add('hidden');
-                    // Remove required
                     dateInput.required = false;
                     timeHourInput.required = false;
                     timeAmPmInput.required = false;
@@ -86,40 +103,72 @@
                 }
             }
 
-            // Listen for changes
             typeMessage.addEventListener('change', updateFormState);
             typeMeeting.addEventListener('change', updateFormState);
 
-            // Submit Handler (Simulation)
-            contactForm.addEventListener('submit', (e) => {
+            // Submit Handler (Bridged to Google Forms)
+            contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 const originalBtnText = submitBtn.textContent;
                 submitBtn.textContent = "Sending...";
                 submitBtn.disabled = true;
                 submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
 
+                // Gather Data
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
                 const contactType = document.querySelector('input[name="contactType"]:checked').value;
+                
+                let dateVal = "";
+                let timeVal = "";
 
-                // Simulate Network Request
-                setTimeout(() => {
-                    // Success Message
+                if (contactType === 'meeting') {
+                    dateVal = dateInput.value;
+                    timeVal = `${timeHourInput.value} ${timeAmPmInput.value}`;
+                }
+
+                // Prepare Google Form Data
+                const formData = new FormData();
+                formData.append(GOOGLE_FORM_IDS.name, name);
+                formData.append(GOOGLE_FORM_IDS.email, email);
+                formData.append(GOOGLE_FORM_IDS.message, message);
+                formData.append(GOOGLE_FORM_IDS.type, contactType === 'meeting' ? "Meeting Request" : "General Message");
+                formData.append(GOOGLE_FORM_IDS.date, dateVal);
+                formData.append(GOOGLE_FORM_IDS.time, timeVal);
+
+                try {
+                    // Send to Google Forms using 'no-cors' mode
+                    // 'no-cors' means we can send data, but we won't get a standard "200 OK" response readable by JS.
+                    // We assume success if the fetch doesn't throw a network error.
+                    await fetch(GOOGLE_FORM_URL, {
+                        method: "POST",
+                        mode: "no-cors",
+                        body: formData
+                    });
+
+                    // UI Feedback
                     const successText = contactType === 'meeting' ? '✅ Request sent successfully!' : '✅ Message sent successfully!';
                     formStatus.innerHTML = `<div class="p-3 bg-green-100 text-green-800 rounded-md text-center font-semibold mt-4">${successText}</div>`;
                     
                     contactForm.reset(); 
-                    
-                    // Reset UI state
                     typeMessage.checked = true; 
                     updateFormState();
                     
-                    // Reset Button
                     setTimeout(() => {
                         submitBtn.disabled = false;
                         submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
                         formStatus.innerHTML = ''; 
                         submitBtn.textContent = "Send Message";
-                    }, 3000);
-                }, 1000);
+                    }, 4000);
+
+                } catch (error) {
+                    console.error("Error:", error);
+                    formStatus.innerHTML = '<div class="p-3 bg-red-100 text-red-800 rounded-md text-center font-semibold mt-4">❌ Error sending. Please check your connection.</div>';
+                    submitBtn.textContent = originalBtnText;
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+                }
             });
         });
     </script>
@@ -184,7 +233,6 @@
                     <div class="flex-1 flex justify-center relative z-10">
                         <!-- Link to home, No zoom, Prevent Save -->
                         <a href="#home" class="block group flex justify-center">
-                            <!-- UPDATED PATH: image/MyPhoto.jpg -->
                             <img src="image/MyPhoto.jpg" 
                                  alt="Bagus Samudro" 
                                  class="w-[250px] h-[250px] object-cover rounded-2xl border-4 border-white shadow-card-default transition-all duration-300 hover:opacity-90 hover:shadow-lg"
@@ -222,7 +270,6 @@
                     <!-- Project 1: Cari.AI (UPDATED CONTENT) -->
                     <article class="bg-white rounded-xl border border-border-brown overflow-visible shadow-card-default transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover hover:z-10 relative group">
                         <!-- Prevent Save (oncontextmenu) -->
-                        <!-- UPDATED PATH: image/cariAI.jpg -->
                         <img src="image/cariAI.jpg" 
                              class="w-full h-52 object-cover rounded-t-xl bg-very-light-beige cursor-zoom-in relative z-10 transition-all duration-500 ease-pop hover:scale-[1.15] hover:shadow-image-pop hover:z-20" 
                              alt="cari.AI - Click to Zoom"
@@ -247,7 +294,6 @@
                     <!-- Project 2: Portfolio -->
                     <article class="bg-white rounded-xl border border-border-brown overflow-visible shadow-card-default transition-all duration-300 hover:-translate-y-2 hover:shadow-card-hover hover:z-10 relative group">
                         <a href="#home" aria-label="Go to Home">
-                            <!-- UPDATED PATH: image/Portfolio.jpg -->
                             <img src="image/Portfolio.jpg" 
                                  class="w-full h-52 object-cover rounded-t-xl bg-very-light-beige transition-all duration-500 ease-pop hover:scale-[1.15] hover:shadow-image-pop hover:z-20 relative z-10" 
                                  alt="Portfolio - Go to Home" 
