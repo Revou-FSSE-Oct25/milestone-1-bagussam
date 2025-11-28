@@ -1,14 +1,14 @@
-#🌐 Personal Portfolio Website - Bagus Aji
+#🌐 Personal Portfolio Website - Bagus Aji#
 
 A modern, responsive personal portfolio website built to showcase my web development projects and skills.
 
-#🚀 Live Demo: [https://revou-fsse-oct25.github.io/milestone-1-bagussam/)]
+🚀 Live Demo: [https://revou-fsse-oct25.github.io/milestone-1-bagussam/)]#
 
 This project serves as my digital resume and portfolio. It demonstrates my ability to build responsive web applications using modern frontend technologies like Tailwind CSS and integrate serverless form handling using Google Forms.
 
 #✨ Key Features
 
-#🎨 Modern & Responsive UI
+##🎨 Modern & Responsive UI
 
 Tailwind CSS Styling: Utilizes a utility-first CSS framework for rapid, pixel-perfect responsive design.
 
@@ -18,7 +18,7 @@ Responsive Grid: The project gallery automatically adapts to different screen si
 
 Smooth Navigation: Sticky header with smooth scrolling anchor links and a dynamic mobile sidebar.
 
-#🖼️ Interactive Elements
+##🖼️ Interactive Elements
 
 Lightbox Gallery: Click on project images to view them in a full-screen, darkened modal with a smooth zoom animation.
 
@@ -28,7 +28,7 @@ Protected Assets: Images are protected from easy downloading (right-click and dr
 
 Parallax Scrolling: Immersive parallax backgrounds on the Home and Contact sections.
 
-#📬 Dynamic Contact System
+##📬 Dynamic Contact System
 
 Smart Form Logic: A dynamic contact form that changes fields based on user intent:
 
@@ -40,7 +40,7 @@ Custom Time Picker: User-friendly dual-dropdowns for selecting Hour (01-12) and 
 
 Google Forms Integration: All submissions are securely sent directly to Google Forms, requiring no backend server maintenance.
 
-#🛠️ Tech Stack
+##🛠️ Tech Stack
 
 Frontend
 
@@ -66,6 +66,6 @@ Google Forms: "Serverless" backend for handling contact form submissions.
 └── README.md           # Project documentation
 ''''''
 
-👤 Author
+#👤 Author
 
 Bagus Aji
