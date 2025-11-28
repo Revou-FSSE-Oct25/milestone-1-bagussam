@@ -59,4 +59,5 @@ This project serves as my digital resume and portfolio. It demonstrates my abili
 ---
 
 ## 👤 Author
+
 Created by **Bagus Aji**
