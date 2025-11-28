@@ -59,4 +59,8 @@ This project serves as my digital resume and portfolio. It demonstrates my abili
 ---
 
 ## 👤 Author
+<<<<<<< HEAD
 Created by **Bagus Aji**
+=======
+Created by **Bagus Aji**
+>>>>>>> 480793ddae9152baa9d8c6ec614d6c385f5ea7b8
